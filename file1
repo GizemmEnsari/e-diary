@@ -1,0 +1,95 @@
+# diary app that allows you to create a username and password, and later on you can log into your
+#  account keep writing in your diary. If a username is already taken, you will have to create
+# a different one. The information gets saved on a file and that file is checked later when you
+# want to log into your account
+from datetime import date
+today = date.today()
+t_date = today.strftime("%B %d, %Y")
+
+
+class diary:
+    users = 0
+
+    def __init__(self):
+        diary.users = +1
+
+
+
+    def createUsername(self):
+
+        f = open("data.txt", "w")
+        confirmUsrNm =""
+        self.username = ""
+        while confirmUsrNm != 'y':
+            self.username = input("Please select a username: ")
+            confirmUsrNm= input("Your username will be "+ self.username+ " enter 'y' to confirm or any other letter to try"
+                                                                "again")
+        f.write(self.username+"\n")
+        f.close()
+
+
+
+        print("Your username is succesfully created!")
+
+    def createPassword(self):
+        f = open("data.txt", "w")
+        lowerCase = 0  # initializing the requirements to 0, if the username includes them
+        upperCase = 0  # they will be increased to check later on if all the requirements are
+        number = 0  # satisfied
+        self.password = ""
+        while upperCase == 0 or number == 0 or len(self.password) < 8 or len(self.password) > 16:
+            password = input("create a username, length has to be between 8-16, it has to include one lower, one "
+                             "uppercase letter and a number.")
+
+        for c in self.password:
+            if c.islower():
+                lowerCase = + 1
+            if c.isupper():
+                upperCase = + 1
+            if c.isdigit():
+                number = +1
+
+        if lowerCase > 0 & upperCase > 0 & number > 0 & len(self.password) > 8 & len(self.password) < 16:
+            f.write(self.password+"_\n") # each pair of username and password will end with an underscore so they will
+                                    # be easily identified
+            print("Your password is succesfully created!")
+            f.close()
+            return True
+        else:
+            f.close()
+            return False
+
+
+    def login(self,username,password):
+
+        f = open("data.txt", "r")
+        countLines = 0
+        lines = f.readline()
+        for line in lines:
+            countLines = + 1
+            if line == username:
+                if f.readlines(countLines) == password +"_\n":
+                    print("Login is succesful!")
+                    f.close()
+                    return True
+                else:
+                    f.close()
+                    return False
+
+
+    def writeToDiary(self):
+        write = ""
+        confirm = 'n'
+        while confirm != 'y':
+            write = input("Write to your e-diary: ")
+            confirm = input("You want to write: "+write+" to your e-diary, enter 'y' to confirm, or any other character"
+                                                    " to decline ")
+
+            # for each user's e diary, a file named as the user's username will be created and the data
+            # for that person will be stored there
+        filename = "%s.txt" %self.username
+        f = open(filename,"w")
+        f.write("Date: " + t_date+ "\n" + write )
+        f.close()
+def main():
+    pass
